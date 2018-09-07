@@ -4,7 +4,7 @@ Simple event handling in Go, without magic strings.
 ##Example
 ```go
 func onMessage(args ev.Args) {
-    println(args.String(0)) // cast arg 0 to string and print it!
+    println(args.String(0)) // assert arg 0 is string and print it!
 }
 
 var message ev.Ent
