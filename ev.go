@@ -6,7 +6,8 @@ type Args struct {
 	s []interface{}
 }
 
-func (a *Args) Len() int { return len(a.s) }
+func (a *Args) Len() int         { return len(a.s) }
+func (a *Args) S() []interface{} { return a.s }
 
 func (a *Args) String(i uint) string { return a.s[i].(string) }
 func (a *Args) Int(i uint) int       { return a.s[i].(int) }
@@ -41,9 +42,15 @@ func (e *Ent) Off(h func(Args)) {
 	panic("handler not found")
 }
 
+func (e *Ent) LockOn(h func(Args)) {
+	e.handlers = append(e.handlers, handlerInfo{
+		f:    h,
+		once: false,
+	})
+}
+
 func (e *Ent) Once(h func(Args)) {
 	e.handlers = append(e.handlers, handlerInfo{
-		ptr:  reflect.ValueOf(h).Pointer(),
 		f:    h,
 		once: true,
 	})
